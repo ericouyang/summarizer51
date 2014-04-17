@@ -8,9 +8,12 @@ let get_input_stream (in_filename : string) : In_channel.t =
 let get_output_stream (out_filename : string) : Out_channel.t =
   Out_channel.create out_filename
 
+module T = TextRank.Make(SimpleCompare)
+
 let get_summary (algo : algorithm) (in_stream : In_channel.t) : string list =
   match algo with 
-  | TextRank -> TextRank.get_summary (Parser.parse in_stream) 
+  | TextRank -> 
+    T.get_summary (Parser.parse in_stream)
 
 (*
 let get_keywords (in_stream : In_channel.t) : string list =

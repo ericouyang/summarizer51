@@ -1,5 +1,5 @@
 open Core.Std
-#load "str.cma"
+#load "str.cma";;
 
 type sentence = {
   words : string list;

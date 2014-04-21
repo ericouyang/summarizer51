@@ -4,27 +4,26 @@ module type GRAPH =
 sig
   type 'b t
 
-  val create : unit -> 'b t
+  val create : (string, unit -> 'b t) Core_kernel.Hash_set_intf.create_options_without_hashable
 
-  val add_node : 'b t -> string -> 'b -> unit
+  val add_node : 'b t -> key:string -> data:'b -> [ `Duplicate | `Ok ]
 
-  val get_node : 'b t -> string -> 'b
+  val get_node : 'b t -> string -> 'b option
 
   val fold : 'b t -> init:'c -> f:(key:string -> data:'b -> 'c -> 'c) -> 'c
 end
 
-
-module H = Hashtbl.Make(String)
-
 module HashtblGraph : GRAPH =
 struct
+  module H = Hashtbl.Make(String)
+
   type 'b t = 'b H.t
 
-  val create = H.create
+  let create = H.create
 
-  val add_node = H.add
+  let add_node = H.add
 
-  val get_node = H.find
+  let get_node = H.find
 
-  val fold = H.fold
+  let fold = H.fold
 end
